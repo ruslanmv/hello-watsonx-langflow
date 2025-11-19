@@ -1,0 +1,270 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-langflow"
+version = "1.0.0"
+description = "LangFlow + IBM watsonx.ai Integration Demo"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+    {name = "IBM watsonx.ai Team", email = "support@ibm.com"}
+]
+maintainers = [
+    {name = "IBM watsonx.ai Team", email = "support@ibm.com"}
+]
+keywords = [
+    "watsonx",
+    "langflow",
+    "langchain",
+    "ai",
+    "llm",
+    "ibm",
+    "granite",
+    "chatbot",
+    "multi-agent",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    "langflow>=1.0.0",
+    "langchain>=0.1.0",
+    "langchain-core>=0.1.0",
+    "langchain-ibm>=0.1.0",
+    "ibm-watsonx-ai>=1.1.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    # Testing
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-mock>=3.11.0",
+    
+    # Code quality
+    "black>=23.7.0",
+    "flake8>=6.1.0",
+    "isort>=5.12.0",
+    "mypy>=1.5.0",
+    "pylint>=2.17.0",
+    
+    # Type stubs
+    "types-requests>=2.31.0",
+    
+    # Documentation
+    "sphinx>=7.1.0",
+    "sphinx-rtd-theme>=1.3.0",
+    
+    # Utilities
+    "ipython>=8.14.0",
+    "jupyter>=1.0.0",
+    "notebook>=7.0.0",
+]
+
+jupyter = [
+    "ipython>=8.14.0",
+    "jupyter>=1.0.0",
+    "notebook>=7.0.0",
+    "ipykernel>=6.25.0",
+]
+
+docs = [
+    "sphinx>=7.1.0",
+    "sphinx-rtd-theme>=1.3.0",
+    "myst-parser>=2.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/ibm/watsonx-langflow-demo"
+Documentation = "https://github.com/ibm/watsonx-langflow-demo/blob/main/README.md"
+Repository = "https://github.com/ibm/watsonx-langflow-demo"
+"Bug Tracker" = "https://github.com/ibm/watsonx-langflow-demo/issues"
+
+[project.scripts]
+agent-langflow = "agent_langflow:main"
+
+[tool.setuptools]
+py-modules = ["agent_langflow"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["agent_langflow*"]
+exclude = ["tests*", "docs*"]
+
+# ============================================================================
+# Black - Code Formatter
+# ============================================================================
+[tool.black]
+line-length = 100
+target-version = ['py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+# ============================================================================
+# isort - Import Sorter
+# ============================================================================
+[tool.isort]
+profile = "black"
+line_length = 100
+skip_gitignore = true
+known_first_party = ["agent_langflow"]
+known_third_party = ["langflow", "langchain", "langchain_ibm", "ibm_watsonx_ai"]
+
+# ============================================================================
+# pytest - Testing
+# ============================================================================
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--tb=short",
+    "--cov=agent_langflow",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+# ============================================================================
+# Coverage
+# ============================================================================
+[tool.coverage.run]
+source = ["agent_langflow"]
+omit = [
+    "*/tests/*",
+    "*/test_*.py",
+    "*/__pycache__/*",
+    "*/venv/*",
+]
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]
+
+# ============================================================================
+# mypy - Type Checking
+# ============================================================================
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+strict_optional = true
+
+[[tool.mypy.overrides]]
+module = [
+    "langflow.*",
+    "langchain.*",
+    "langchain_ibm.*",
+    "ibm_watsonx_ai.*",
+]
+ignore_missing_imports = true
+
+# ============================================================================
+# pylint - Linting
+# ============================================================================
+[tool.pylint.main]
+py-version = "3.11"
+jobs = 0
+fail-under = 8.0
+
+[tool.pylint.messages_control]
+disable = [
+    "C0111",  # missing-docstring
+    "C0103",  # invalid-name
+    "R0903",  # too-few-public-methods
+    "R0913",  # too-many-arguments
+    "W0212",  # protected-access
+]
+
+[tool.pylint.format]
+max-line-length = 100
+
+[tool.pylint.design]
+max-args = 8
+max-locals = 20
+max-branches = 15
+
+# ============================================================================
+# flake8 - Linting (in setup.cfg since flake8 doesn't support pyproject.toml)
+# ============================================================================
+# See setup.cfg for flake8 configuration
+
+# ============================================================================
+# Ruff - Fast Python Linter (Alternative to flake8)
+# ============================================================================
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501",  # line too long (handled by black)
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+]
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.ruff.isort]
+known-first-party = ["agent_langflow"]
