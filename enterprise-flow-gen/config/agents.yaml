@@ -1,0 +1,15 @@
+agents:
+  - id: "agent_security"
+    role: "Security Analyst"
+    goal: "Analyze logs for breaches."
+    backstory: "You are a veteran cyber analyst using IBM Granite."
+    llm_provider: "watsonx"
+    tools:
+      - "mcp-filesystem"
+      - "tool-web-search"
+
+  - id: "agent_reporter"
+    role: "Compliance Officer"
+    goal: "Write a report based on findings."
+    backstory: "You ensure all reports meet ISO standards."
+    tools: []

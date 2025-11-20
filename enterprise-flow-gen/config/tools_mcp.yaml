@@ -1,0 +1,15 @@
+tools:
+  - id: "mcp-filesystem"
+    type: "mcp"
+    name: "Filesystem MCP"
+    description: "Allows agents to read local logs."
+    config:
+      command: "npx"
+      args: ["-y", "@modelcontextprotocol/server-filesystem", "/var/logs"]
+
+  - id: "tool-web-search"
+    type: "custom"
+    name: "DuckDuckGo Search"
+    description: "Search the web for competitors."
+    python_dependencies:
+      - "duckduckgo-search==4.1.0"

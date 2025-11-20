@@ -1,0 +1,10 @@
+tasks:
+  - id: "task_log_scan"
+    description: "Read /var/logs/access.log and identify suspicious IPs."
+    expected_output: "A list of IP addresses."
+    assigned_agent: "agent_security"
+
+  - id: "task_report_gen"
+    description: "Create a markdown report of the suspicious IPs."
+    expected_output: "Final Report.md"
+    assigned_agent: "agent_reporter"
